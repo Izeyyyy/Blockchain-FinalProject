@@ -3,12 +3,74 @@ import { CheckCircle } from 'lucide-react'
 
 import PageIntro from '@/components/PageIntro'
 import { usePageTitle } from '@/hooks/usePageTitle'
-import {
-  academicDocuments,
-  academicCertificates,
-  supportedFileTypes,
-  uploadRequirements,
-} from '@/data/mockData'
+
+const academicDocuments = [
+  {
+    id: 1,
+    title: 'Diploma',
+    description:
+      'Official academic diplomas issued by recognized educational institutions.',
+  },
+  {
+    id: 2,
+    title: 'Transcript of Records',
+    description:
+      'Academic transcripts containing completed courses, grades, and academic history.',
+  },
+  {
+    id: 3,
+    title: 'Certificate of Completion',
+    description:
+      'Certificates confirming completion of academic programs or requirements.',
+  },
+]
+
+const academicCertificates = [
+  {
+    id: 1,
+    title: 'Training Certificates',
+    description:
+      'Certificates issued for academic training, workshops, or professional development.',
+  },
+  {
+    id: 2,
+    title: 'Achievement Certificates',
+    description:
+      'Certificates recognizing academic achievements and distinctions.',
+  },
+  {
+    id: 3,
+    title: 'Special Program Certificates',
+    description:
+      'Certificates issued for specialized academic programs or courses.',
+  },
+]
+
+const supportedFileTypes = [
+  'PDF',
+  'PNG',
+  'JPG',
+  'JPEG',
+]
+
+const uploadRequirements = [
+  {
+    id: 1,
+    text: 'Document must be clear and readable.',
+  },
+  {
+    id: 2,
+    text: 'Accepted formats are PDF and image files.',
+  },
+  {
+    id: 3,
+    text: 'Only original academic credentials should be uploaded.',
+  },
+  {
+    id: 4,
+    text: 'The generated Transaction ID should be saved for future verification.',
+  },
+]
 
 const SupportedCredentials = () => {
   usePageTitle('Supported Credentials')

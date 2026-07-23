@@ -5,5 +5,21 @@
     "txHash": "dff7da63d56e34b658e1c48273c5850f5a84abefb63f8a2860787dc052fad976",
     "previousTxHash": "genesis",
     "timestamp": 1784789411199
+  },
+  {
+    "fileName": "Gaane_Earl Izaac_Phase2.pdf",
+    "fileHash": "059f0aaa05723300620a96d02bf4af32c665a969affe0ca2785c49d14931b6bc",
+    "txHash": "ed28adc9e151012868d8c5e3c69feda99d023bd76c066ab71f9a3e35c7fbad50",
+    "previousTxHash": "dff7da63d56e34b658e1c48273c5850f5a84abefb63f8a2860787dc052fad976",
+    "timestamp": 1784825297325,
+    "status": "Original"
+  },
+  {
+    "fileName": "Vestil.API.pdf",
+    "fileHash": "5696b944163bfbf82bf1b2a9491ee7c6bbda2a125bb273c37d64656fdc5a0eb8",
+    "txHash": "bedf0f313a606776f43e5d8abbf76d417acab7486bf9aca41d7e1c922871d181",
+    "previousTxHash": "ed28adc9e151012868d8c5e3c69feda99d023bd76c066ab71f9a3e35c7fbad50",
+    "timestamp": 1784826028318,
+    "status": "Original"
   }
 ]

@@ -1,206 +1,263 @@
-import { useMemo, useRef, useState } from 'react'
-import { CloudUpload, FileCheck2, FileWarning } from 'lucide-react'
+import { useRef, useState } from 'react'
 import {
   Alert,
   Box,
   Button,
-  Chip,
   Divider,
   LinearProgress,
   Paper,
   Stack,
   Typography,
 } from '@mui/material'
+import {
+  CloudUpload,
+  Search,
+} from 'lucide-react'
+
+type UploadResponse = {
+  message: string
+  note?: string
+  record?: {
+    fileName: string
+    fileHash: string
+    txHash: string
+    previousTxHash: string
+    timestamp: number
+    status: string
+  }
+}
 
 type UploadVerifyPanelProps = {
   title: string
   description: string
+  verifyButtonLabel: string
   supportedFileTypes: string[]
   accept?: string
-  verifyButtonLabel: string
-  onVerify: (file: File) => Promise<{ success: boolean; message: string; transactionHash?: string; status?: string }>
+  onVerify: (
+    file: File
+  ) => Promise<UploadResponse>
 }
 
 const UploadVerifyPanel = ({
   title,
   description,
-  supportedFileTypes,
-  accept,
   verifyButtonLabel,
+  accept,
   onVerify,
 }: UploadVerifyPanelProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null)
-  const [dragOver, setDragOver] = useState(false)
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const [verifying, setVerifying] = useState(false)
-  const [result, setResult] = useState<{ success: boolean; message: string; transactionHash?: string; status?: string } | null>(null)
 
-  const statusLabel = useMemo(() => {
-    if (!selectedFile) return 'No file selected'
-    return `Selected: ${selectedFile.name}`
-  }, [selectedFile])
+  const [selectedFile, setSelectedFile] =
+    useState<File | null>(null)
 
-  const handleFiles = (files: FileList | null) => {
+  const [uploading, setUploading] =
+    useState(false)
+
+  const [result, setResult] =
+    useState<UploadResponse | null>(null)
+
+
+  const handleFile = (
+    files: FileList | null
+  ) => {
     if (!files?.length) return
+
     setSelectedFile(files[0])
     setResult(null)
   }
 
-  const handleVerify = async () => {
-    if (!selectedFile || verifying) return
-    setVerifying(true)
+
+  const handleUpload = async () => {
+    if (!selectedFile || uploading) return
+
+    setUploading(true)
+
     try {
       const response = await onVerify(selectedFile)
+
       setResult(response)
+
+    } catch (error: any) {
+      setResult({
+        message:
+          error.response?.data?.message ??
+          'Credential registration failed.',
+      })
     } finally {
-      setVerifying(false)
+      setUploading(false)
     }
   }
 
+
   return (
-    <Paper sx={{ p: { xs: 3, md: 3.5 } }}>
-      <Stack spacing={2.5}>
+    <Paper sx={{ p: 3.5 }}>
+      <Stack spacing={3}>
+
         <Box>
-          <Typography variant="h3">{title}</Typography>
-          <Typography color="text.secondary" sx={{ mt: 1 }}>
+          <Typography variant="h3">
+            {title}
+          </Typography>
+
+          <Typography color="text.secondary">
             {description}
           </Typography>
         </Box>
 
+
         <Paper
-          onDragEnter={(event) => {
-            event.preventDefault()
-            event.stopPropagation()
-            setDragOver(true)
-          }}
-          onDragLeave={(event) => {
-            event.preventDefault()
-            event.stopPropagation()
-            setDragOver(false)
-          }}
-          onDragOver={(event) => {
-            event.preventDefault()
-            event.stopPropagation()
-          }}
-          onDrop={(event) => {
-            event.preventDefault()
-            event.stopPropagation()
-            setDragOver(false)
-            handleFiles(event.dataTransfer.files)
-          }}
           sx={{
-            p: { xs: 3, md: 4 },
-            borderRadius: 5,
-            borderStyle: 'dashed',
-            borderWidth: 2,
-            borderColor: dragOver ? 'primary.main' : 'divider',
-            backgroundColor: dragOver ? 'rgba(37, 99, 235, 0.06)' : 'rgba(248, 250, 252, 0.9)',
-            boxShadow: 'none',
+            p: 4,
+            border: '2px dashed',
+            borderColor: 'divider',
+            borderRadius: 4,
+            textAlign: 'center',
             cursor: 'pointer',
           }}
-          onClick={() => inputRef.current?.click()}
+          onClick={() =>
+            inputRef.current?.click()
+          }
         >
+
           <input
             hidden
             ref={inputRef}
             type="file"
             accept={accept}
-            onChange={(event) => handleFiles(event.target.files)}
+            onChange={(e) =>
+              handleFile(e.target.files)
+            }
           />
-          <Stack alignItems="center" spacing={1.5}>
-            <Box
-              sx={{
-                width: 54,
-                height: 54,
-                borderRadius: 4,
-                display: 'grid',
-                placeItems: 'center',
-                background: 'linear-gradient(135deg, rgba(37,99,235,0.96) 0%, rgba(6,182,212,0.92) 100%)',
-                color: '#FFFFFF',
-                boxShadow: '0px 18px 40px rgba(37, 99, 235, 0.18)',
-              }}
-            >
-              <CloudUpload size={22} />
-            </Box>
-            <Typography fontWeight={800}>Drag &amp; drop to upload</Typography>
-            <Typography color="text.secondary" textAlign="center">
-              Or click to browse and select a file for verification.
+
+
+          <Stack
+            spacing={2}
+            alignItems="center"
+          >
+
+            <CloudUpload size={32} />
+
+            <Typography fontWeight={700}>
+              Upload Credential
             </Typography>
-            <Button variant="outlined" onClick={(event) => {
-              event.stopPropagation()
-              inputRef.current?.click()
-            }}>
+
+            <Typography color="text.secondary">
+              Click to browse a credential file.
+            </Typography>
+
+            <Button variant="outlined">
               Browse File
             </Button>
+
           </Stack>
+
         </Paper>
 
-        <Stack spacing={1.25}>
-          <Typography fontWeight={800}>Supported file types</Typography>
-          <Stack direction="row" flexWrap="wrap" gap={1}>
-            {supportedFileTypes.map((type) => (
-              <Chip
-                key={type}
-                label={type}
-                sx={{
-                  backgroundColor: 'rgba(37, 99, 235, 0.08)',
-                  color: 'primary.main',
-                  fontWeight: 800,
-                }}
-              />
-            ))}
-          </Stack>
-        </Stack>
+
+        <Alert
+          severity={
+            selectedFile
+              ? 'success'
+              : 'info'
+          }
+        >
+          {selectedFile
+            ? selectedFile.name
+            : 'No file selected'}
+        </Alert>
+
+
+        {uploading && (
+          <LinearProgress />
+        )}
+
+
+        <Button
+          variant="contained"
+          startIcon={<Search size={18} />}
+          disabled={
+            !selectedFile ||
+            uploading
+          }
+          onClick={handleUpload}
+        >
+          {verifyButtonLabel}
+        </Button>
+
 
         <Divider />
 
-        <Stack spacing={1.5}>
-          <Typography fontWeight={800}>Upload status</Typography>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} alignItems={{ xs: 'stretch', sm: 'center' }}>
-            <Chip
-              icon={selectedFile ? <FileCheck2 size={16} /> : <FileWarning size={16} />}
-              label={statusLabel}
-              sx={{
-                width: 'fit-content',
-                backgroundColor: selectedFile ? 'rgba(20, 184, 166, 0.10)' : 'rgba(148, 163, 184, 0.18)',
-                color: selectedFile ? 'success.main' : 'text.secondary',
-                fontWeight: 800,
-              }}
-            />
-            <Box sx={{ flex: 1 }}>
-              {verifying ? <LinearProgress /> : null}
-            </Box>
-            <Button disabled={!selectedFile || verifying} variant="contained" onClick={handleVerify}>
-              {verifyButtonLabel}
-            </Button>
-          </Stack>
-        </Stack>
 
-        <Divider />
+        {result ? (
 
-        <Stack spacing={1.5}>
-          <Typography fontWeight={800}>Verification result</Typography>
-          {result ? (
-            <Alert severity={result.success ? 'success' : 'warning'} sx={{ borderRadius: 4 }}>
-              <Stack spacing={0.5}>
-                <Typography fontWeight={800}>{result.message}</Typography>
-                {result.transactionHash ? (
-                  <Typography variant="body2">Transaction Hash: {result.transactionHash}</Typography>
-                ) : null}
-                {result.status ? (
-                  <Typography variant="body2">Status: {result.status}</Typography>
-                ) : null}
-              </Stack>
-            </Alert>
-          ) : (
-            <Alert severity="info" sx={{ borderRadius: 4 }}>
-              Verification results will appear here after you upload and submit a file.
-            </Alert>
-          )}
-        </Stack>
+          <Alert severity="success">
+
+            <Stack spacing={1.5}>
+
+              <Typography fontWeight={700}>
+                {result.message}
+              </Typography>
+
+
+              {result.note && (
+                <Typography>
+                  {result.note}
+                </Typography>
+              )}
+
+
+              {result.record?.txHash && (
+                <>
+                  <Typography fontWeight={700}>
+                    Transaction ID
+                  </Typography>
+
+
+                  <Typography
+                    fontFamily="monospace"
+                    sx={{
+                      wordBreak: 'break-all',
+                    }}
+                  >
+                    {result.record.txHash}
+                  </Typography>
+                </>
+              )}
+
+
+              {result.record?.fileHash && (
+                <>
+                  <Typography fontWeight={700}>
+                    SHA-256 File Hash
+                  </Typography>
+
+
+                  <Typography
+                    fontFamily="monospace"
+                    sx={{
+                      wordBreak: 'break-all',
+                    }}
+                  >
+                    {result.record.fileHash}
+                  </Typography>
+                </>
+              )}
+
+            </Stack>
+
+          </Alert>
+
+        ) : (
+
+          <Alert severity="info">
+            Upload a credential to register it on the Cardano blockchain.
+          </Alert>
+
+        )}
+
       </Stack>
     </Paper>
   )
 }
+
 
 export default UploadVerifyPanel

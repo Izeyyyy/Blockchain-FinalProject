@@ -26,4 +26,11 @@ function findByFileHash(fileHash) {
   return records.find((r) => r.fileHash === fileHash) || null;
 }
 
-module.exports = { readIndex, appendRecord, getLastRecord, findByFileHash };
+function findByTxHash(txHash) {
+  const records = readIndex();
+  return records.find((r) => r.txHash === txHash) || null;
+}
+
+
+
+module.exports = { readIndex, appendRecord, getLastRecord, findByFileHash, findByTxHash };
