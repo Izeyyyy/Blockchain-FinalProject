@@ -31,8 +31,10 @@ export const postVerifyDocument = async (payload) =>
     {
       success: true,
       message: 'Mock document verification completed.',
-      referenceId: `DOC-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`,
-      status: 'Verified',
+      transactionHash: `${Array.from({ length: 64 })
+        .map(() => '0123456789abcdef'[Math.floor(Math.random() * 16)])
+        .join('')}`,
+      status: 'Pending Registration',
     },
   )
 
@@ -42,8 +44,10 @@ export const postVerifyCertificate = async (payload) =>
     {
       success: true,
       message: 'Mock certificate verification completed.',
-      referenceId: `CERT-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`,
-      status: 'Verified',
+      transactionHash: `${Array.from({ length: 64 })
+        .map(() => '0123456789abcdef'[Math.floor(Math.random() * 16)])
+        .join('')}`,
+      status: 'Pending Registration',
     },
   )
 

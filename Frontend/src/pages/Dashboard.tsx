@@ -1,8 +1,6 @@
 import { motion } from 'framer-motion'
-import { Search } from 'lucide-react'
-import { Box, Grid, IconButton, InputBase, Paper, Stack, Typography } from '@mui/material'
-import { useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Box, Grid, Paper, Stack, Typography } from '@mui/material'
+import { useMemo } from 'react'
 
 import FeatureCard from '@/components/FeatureCard'
 import { featureCards } from '@/data/mockData'
@@ -10,9 +8,7 @@ import { usePageTitle } from '@/hooks/usePageTitle'
 import { fadeInUp, staggerContainer } from '@/utils/motion'
 
 const Dashboard = () => {
-  usePageTitle('Dashboard')
-  const navigate = useNavigate()
-  const [query, setQuery] = useState('')
+  usePageTitle('Home')
   const actionCards = useMemo(
     () =>
       featureCards.map((item) => ({
@@ -49,50 +45,16 @@ const Dashboard = () => {
               </Typography>
             </Stack>
           </motion.div>
-
-          <motion.div variants={fadeInUp} style={{ width: '100%', maxWidth: 640 }}>
-            <Paper
-              sx={{
-                px: 2.5,
-                py: 0.8,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1,
-                borderRadius: 999,
-                backgroundColor: 'rgba(232,240,247,0.18)',
-                border: '1px solid rgba(232,240,247,0.22)',
-                boxShadow: 'none',
-              }}
-            >
-              <InputBase
-                fullWidth
-                placeholder="Search"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                sx={{
-                  color: '#E8F0F7',
-                  '& input::placeholder': {
-                    color: 'rgba(232,240,247,0.72)',
-                    opacity: 1,
-                  },
-                }}
-              />
-              <IconButton
-                aria-label="Search verification history"
-                onClick={() => navigate(`/verification-history${query.trim() ? `?q=${encodeURIComponent(query.trim())}` : ''}`)}
-                sx={{
-                  backgroundColor: 'rgba(232,240,247,0.16)',
-                  color: '#E8F0F7',
-                }}
-              >
-                <Search size={18} />
-              </IconButton>
-            </Paper>
-          </motion.div>
         </Stack>
       </Box>
 
-      <Box sx={{ px: { xs: 2, md: 5 }, mt: { xs: -11, md: -13 }, position: 'relative', zIndex: 2 }}>
+      <Box
+        component={motion.div}
+        variants={staggerContainer}
+        initial="hidden"
+        animate="visible"
+        sx={{ px: { xs: 2, md: 5 }, mt: { xs: -11, md: -13 }, position: 'relative', zIndex: 2 }}
+      >
         <Grid
           container
           spacing={{ xs: 2, md: 0 }}
@@ -103,10 +65,8 @@ const Dashboard = () => {
           }}
         >
           {actionCards.map((item) => (
-            <Grid key={item.id} size={{ xs: 12, md: 4 }}>
-              <motion.div variants={fadeInUp}>
-                <FeatureCard {...item} />
-              </motion.div>
+            <Grid key={item.id} size={{ xs: 12, sm: 6, md: 4 }} sx={{ display: 'flex' }}>
+              <FeatureCard {...item} />
             </Grid>
           ))}
         </Grid>

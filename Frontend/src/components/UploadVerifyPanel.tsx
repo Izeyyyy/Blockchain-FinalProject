@@ -18,7 +18,7 @@ type UploadVerifyPanelProps = {
   supportedFileTypes: string[]
   accept?: string
   verifyButtonLabel: string
-  onVerify: (file: File) => Promise<{ success: boolean; message: string; referenceId?: string; status?: string }>
+  onVerify: (file: File) => Promise<{ success: boolean; message: string; transactionHash?: string; status?: string }>
 }
 
 const UploadVerifyPanel = ({
@@ -33,7 +33,7 @@ const UploadVerifyPanel = ({
   const [dragOver, setDragOver] = useState(false)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [verifying, setVerifying] = useState(false)
-  const [result, setResult] = useState<{ success: boolean; message: string; referenceId?: string; status?: string } | null>(null)
+  const [result, setResult] = useState<{ success: boolean; message: string; transactionHash?: string; status?: string } | null>(null)
 
   const statusLabel = useMemo(() => {
     if (!selectedFile) return 'No file selected'
@@ -184,8 +184,8 @@ const UploadVerifyPanel = ({
             <Alert severity={result.success ? 'success' : 'warning'} sx={{ borderRadius: 4 }}>
               <Stack spacing={0.5}>
                 <Typography fontWeight={800}>{result.message}</Typography>
-                {result.referenceId ? (
-                  <Typography variant="body2">Reference ID: {result.referenceId}</Typography>
+                {result.transactionHash ? (
+                  <Typography variant="body2">Transaction Hash: {result.transactionHash}</Typography>
                 ) : null}
                 {result.status ? (
                   <Typography variant="body2">Status: {result.status}</Typography>

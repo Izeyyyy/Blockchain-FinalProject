@@ -4,6 +4,7 @@ import { Box, IconButton, Stack, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
 import { iconMap } from '@/utils/iconMap'
+import { fadeInUp } from '@/utils/motion'
 
 type FeatureCardProps = {
   title: string
@@ -21,12 +22,14 @@ const FeatureCard = ({ title, description, route, iconKey, accent, featured = fa
   return (
     <Box
       component={motion.div}
+      variants={fadeInUp}
       whileHover={{ y: -8, scale: 1.01 }}
       transition={{ duration: 0.22, ease: 'easeOut' }}
       onClick={() => navigate(route)}
       sx={{
-        p: { xs: 3, md: 3.25 },
-        height: '100%',
+        width: '100%',
+        height: 340,
+        p: { xs: 4, md: 5 },
         borderRadius: { xs: 4, md: 0 },
         cursor: 'pointer',
         background: 'linear-gradient(180deg, #E8F0F7 0%, #D6E2EC 100%)',
@@ -34,9 +37,7 @@ const FeatureCard = ({ title, description, route, iconKey, accent, featured = fa
         borderColor: 'divider',
         boxShadow: 'none',
         position: 'relative',
-        transform: 'none',
         zIndex: 1,
-        minHeight: 220,
         '&::after': featured
           ? {
               content: '""',
@@ -64,37 +65,38 @@ const FeatureCard = ({ title, description, route, iconKey, accent, featured = fa
           : {}),
       }}
     >
-      <Stack alignItems="center" justifyContent="center" spacing={2} sx={{ textAlign: 'center', height: '100%' }}>
+      <Stack alignItems="center" justifyContent="center" spacing={3} sx={{ textAlign: 'center', height: '100%' }}>
         <Box
           sx={{
             display: 'inline-flex',
-            p: 1.5,
-            borderRadius: 3,
+            p: 2.5,
+            borderRadius: 4,
               background: `linear-gradient(135deg, ${accent} 0%, #AFC3D6 140%)`,
             color: '#FFFFFF',
             width: 'fit-content',
               boxShadow: '0px 16px 34px rgba(0, 0, 42, 0.10)',
           }}
         >
-          <Icon size={28} />
+          <Icon size={40} />
         </Box>
         <Box>
-          <Typography variant="h4" sx={{ fontSize: { xs: 20, md: 22 } }}>
+          <Typography variant="h4" sx={{ fontSize: { xs: 24, md: 28 } }}>
             {title}
           </Typography>
-          <Typography color="text.secondary" sx={{ mt: 1, maxWidth: 260, mx: 'auto' }}>
+          <Typography color="text.secondary" sx={{ mt: 1.5, maxWidth: 400, mx: 'auto', fontSize: { xs: 14, md: 16 } }}>
             {description}
           </Typography>
         </Box>
         <IconButton
           aria-label={`Open ${title}`}
+          size="large"
           sx={{
             border: '1px solid',
             borderColor: 'divider',
             color: 'text.primary',
           }}
         >
-          <ArrowRight size={18} />
+          <ArrowRight size={24} />
         </IconButton>
       </Stack>
     </Box>
