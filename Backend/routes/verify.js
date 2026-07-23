@@ -15,8 +15,6 @@ router.post('/', upload.single('file'), async (req, res) => {
       return res.status(400).json({ error: 'No file uploaded. Field name must be "file".' });
     }
 
-    // txHash can be supplied directly by the user (their "receipt"),
-    // or we can try to look it up locally if they don't have it.
     let { txHash } = req.body;
     const recomputedHash = crypto.createHash('sha256').update(req.file.buffer).digest('hex');
 
@@ -31,7 +29,6 @@ router.post('/', upload.single('file'), async (req, res) => {
       txHash = localMatch.txHash;
     }
 
-    // Ask Blockfrost directly — this is the actual source of truth.
     const response = await axios.get(`${BLOCKFROST_BASE_URL}/txs/${txHash}/metadata`, {
       headers: { project_id: process.env.BLOCKFROST_PROJECT_ID },
     });

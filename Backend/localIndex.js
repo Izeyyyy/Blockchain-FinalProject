@@ -1,7 +1,3 @@
-// A plain JSON file acting as a lightweight local index.
-// This is NOT the source of truth — Cardano is. This file just lets the
-// "chain explorer" page list past records without re-querying Blockfrost
-// for every single one.
 const fs = require('fs');
 const path = require('path');
 
