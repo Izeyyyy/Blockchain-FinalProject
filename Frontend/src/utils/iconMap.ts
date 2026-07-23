@@ -4,12 +4,17 @@ import {
   History,
   LayoutDashboard,
   ShieldCheck,
+  Upload,
+  Database,
+  File,
+  Info,
 } from 'lucide-react'
 
 export const iconMap = {
   dashboard: LayoutDashboard,
-  history: History,
-  shield: ShieldCheck,
-  verifyCertificate: FileBadge,
-  verifyDocument: FileSearch,
+  upload: Upload,
+  verify: ShieldCheck,
+  database: Database,
+  file: File,
+  info: Info,
 }

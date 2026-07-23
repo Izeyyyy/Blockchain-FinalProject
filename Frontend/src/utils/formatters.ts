@@ -1,4 +1,6 @@
-export const formatDisplayDate = (value: string) =>
+export const formatDisplayDate = (
+  value: string | number,
+) =>
   new Date(value).toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',

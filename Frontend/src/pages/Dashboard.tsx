@@ -3,9 +3,38 @@ import { Box, Grid, Paper, Stack, Typography } from '@mui/material'
 import { useMemo } from 'react'
 
 import FeatureCard from '@/components/FeatureCard'
-import { featureCards } from '@/data/mockData'
 import { usePageTitle } from '@/hooks/usePageTitle'
 import { fadeInUp, staggerContainer } from '@/utils/motion'
+
+const featureCards = [
+  {
+    id: 1,
+    title: 'Register Credential',
+    description:
+      'Upload an academic document and register its SHA-256 fingerprint on the Cardano blockchain.',
+    route: '/upload',
+    iconKey: 'upload',
+    accent: '#2563EB',
+  },
+  {
+    id: 2,
+    title: 'Verify Credential',
+    description:
+      'Verify the authenticity of an academic credential using its file and blockchain transaction ID.',
+    route: '/verify',
+    iconKey: 'verify',
+    accent: '#14B8A6',
+  },
+  {
+    id: 3,
+    title: 'Credential Registry',
+    description:
+      'Browse registered academic credentials and view their blockchain transaction records.',
+    route: '/credential-history',
+    iconKey: 'history',
+    accent: '#446A9C',
+  },
+]
 
 const Dashboard = () => {
   usePageTitle('Home')

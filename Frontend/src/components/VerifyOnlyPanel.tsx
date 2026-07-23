@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react'
-import { Search, FileCheck2, FileWarning } from 'lucide-react'
+import { useState } from 'react'
+import { FileCheck2, FileWarning } from 'lucide-react'
 import {
   Alert,
   Box,
@@ -9,36 +9,60 @@ import {
   Paper,
   Stack,
   TextField,
-  Typography,
+  Typography, 
 } from '@mui/material'
+
+type VerifyResponse = {
+  verified: boolean
+  message: string
+  recomputedHash?: string
+  storedHash?: string
+  txHash?: string
+}
 
 type VerifyOnlyPanelProps = {
   title: string
   description: string
   verifyButtonLabel: string
-  onVerify: (transactionHash: string) => Promise<{ success: boolean; message: string; transactionHash?: string; status?: string }>
+  accept?: string
+  onVerify: (file: File, txHash: string) => Promise<VerifyResponse>
 }
 
 const VerifyOnlyPanel = ({
   title,
   description,
   verifyButtonLabel,
+  accept,
   onVerify,
 }: VerifyOnlyPanelProps) => {
   const [transactionHash, setTransactionHash] = useState('')
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [verifying, setVerifying] = useState(false)
-  const [result, setResult] = useState<{ success: boolean; message: string; transactionHash?: string; status?: string } | null>(null)
+  const [result, setResult] = useState<VerifyResponse | null>(null)
 
   const handleVerify = async () => {
-    if (!transactionHash.trim() || verifying) return
-    setVerifying(true)
-    try {
-      const response = await onVerify(transactionHash.trim())
-      setResult(response)
-    } finally {
-      setVerifying(false)
+  if (!selectedFile || !transactionHash.trim() || verifying) return
+
+  setVerifying(true)
+
+  try {
+    const response = await onVerify(
+      selectedFile,
+      transactionHash.trim()
+    )
+
+    setResult(response)
+      } catch (error: any) {
+        setResult({
+          verified: false,
+          message:
+            error.response?.data?.message ??
+            'Verification failed.',
+        })
+      } finally {
+        setVerifying(false)
+      }
     }
-  }
 
   return (
     <Paper sx={{ p: { xs: 3, md: 3.5 } }}>
@@ -51,6 +75,25 @@ const VerifyOnlyPanel = ({
         </Box>
 
         <Stack spacing={1.5}>
+          <Button
+            component="label"
+            variant="outlined"
+          >
+            {selectedFile
+              ? selectedFile.name
+              : 'Choose Academic Credential'}
+
+            <input
+              hidden
+              type="file"
+              accept={accept}
+              onChange={(event) =>
+                setSelectedFile(
+                  event.target.files?.[0] ?? null
+                )
+              }
+            />
+          </Button>
           <TextField
             fullWidth
             label="Cardano Transaction Hash"
@@ -62,9 +105,17 @@ const VerifyOnlyPanel = ({
           <Box sx={{ flex: 1 }}>
             {verifying ? <LinearProgress /> : null}
           </Box>
-          <Button disabled={!transactionHash.trim() || verifying} variant="contained" onClick={handleVerify} startIcon={<Search size={18} />}>
-            {verifyButtonLabel}
-          </Button>
+          <Button
+              variant="contained"
+              disabled={
+                !selectedFile ||
+                !transactionHash.trim() ||
+                verifying
+              }
+              onClick={handleVerify}
+            >
+              {verifying ? 'Verifying...' : verifyButtonLabel}
+        </Button>
         </Stack>
 
         <Divider />
@@ -72,20 +123,19 @@ const VerifyOnlyPanel = ({
         <Stack spacing={1.5}>
           <Typography fontWeight={800}>Verification result</Typography>
           {result ? (
-            <Alert severity={result.success ? 'success' : 'warning'} sx={{ borderRadius: 4 }}>
+            <Alert severity={result.verified ? 'success' : 'error'} sx={{ borderRadius: 4 }}>
               <Stack spacing={0.5}>
                 <Typography fontWeight={800}>{result.message}</Typography>
-                {result.transactionHash ? (
-                  <Typography variant="body2">Transaction Hash: {result.transactionHash}</Typography>
-                ) : null}
-                {result.status ? (
-                  <Typography variant="body2">Status: {result.status}</Typography>
-                ) : null}
+                {result.txHash && (
+                  <Typography variant="body2">
+                    Transaction Hash: {result.txHash}
+                  </Typography>
+                )}
               </Stack>
             </Alert>
           ) : (
             <Alert severity="info" sx={{ borderRadius: 4 }}>
-              Verification results will appear here after you enter a transaction hash and submit.
+              Verification results will appear after you upload an academic credential and enter its transaction hash.
             </Alert>
           )}
         </Stack>

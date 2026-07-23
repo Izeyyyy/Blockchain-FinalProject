@@ -3,7 +3,7 @@ const multer = require('multer');
 const crypto = require('crypto');
 const { Transaction } = require('@meshsdk/core');
 const { wallet } = require('../blockchain');
-const { appendRecord, getLastRecord } = require('../localIndex');
+const { appendRecord, getLastRecord, findByFileHash, } = require('../localIndex');
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -16,6 +16,17 @@ router.post('/', upload.single('file'), async (req, res) => {
 
     // 1. Hash the file
     const fileHash = crypto.createHash('sha256').update(req.file.buffer).digest('hex');
+
+    const existingRecord = findByFileHash(fileHash);
+
+    if (existingRecord) {
+      return res.json({
+        message: 'Credential already registered.',
+        note: 'The original blockchain record has been returned. No new transaction was created.',
+        record: existingRecord,
+        duplicate: true,
+      });
+    }
 
     // 2. Figure out the previous record, to chain this one to it
     const last = getLastRecord();
@@ -31,6 +42,7 @@ router.post('/', upload.single('file'), async (req, res) => {
       previousTxHash,
       fileName: req.file.originalname,
       timestamp: Date.now(),
+      status: "Original",
     });
 
     const unsignedTx = await tx.build();
@@ -44,10 +56,11 @@ router.post('/', upload.single('file'), async (req, res) => {
       txHash,
       previousTxHash,
       timestamp: Date.now(),
+      status: "Original"
     });
 
     res.json({
-      message: 'File hashed and submitted to Cardano testnet.',
+      message: 'Credential successfully registered.',
       record,
       note: 'Confirmation can take 20-60 seconds. Save the txHash to verify this file later.',
     });

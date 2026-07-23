@@ -11,8 +11,8 @@ import {
   Typography,
 } from '@mui/material'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
+import { navigationItems } from '@/config/navigation'
 
-import { navigationItems } from '@/data/mockData'
 import { iconMap } from '@/utils/iconMap'
 
 const Navbar = () => {

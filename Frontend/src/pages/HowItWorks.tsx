@@ -11,7 +11,60 @@ import { ChevronDown } from 'lucide-react'
 
 import PageIntro from '@/components/PageIntro'
 import { usePageTitle } from '@/hooks/usePageTitle'
-import { faqItems, howItWorksSteps } from '@/data/mockData'
+
+const howItWorksSteps = [
+  {
+    id: 1,
+    title: '1. Upload Academic Credential',
+    description:
+      'The user uploads an academic document or certificate through the portal. The system processes the file and prepares it for blockchain registration.',
+  },
+  {
+    id: 2,
+    title: '2. Generate SHA-256 File Hash',
+    description:
+      'The uploaded credential is converted into a unique SHA-256 hash. This hash represents the exact content of the file without storing the actual document on the blockchain.',
+  },
+  {
+    id: 3,
+    title: '3. Register Hash on Cardano Blockchain',
+    description:
+      'The generated hash is stored as blockchain metadata together with the transaction ID, creating an immutable record of the credential.',
+  },
+  {
+    id: 4,
+    title: '4. Verify Credential Authenticity',
+    description:
+      'During verification, the uploaded file is hashed again and compared with the blockchain record. A matching hash confirms that the credential has not been modified.',
+  },
+]
+
+const faqItems = [
+  {
+    id: 1,
+    question: 'Is the actual document stored on the blockchain?',
+    answer:
+      'No. Only the SHA-256 hash and related transaction metadata are recorded. The original credential file remains private.',
+  },
+  {
+    id: 2,
+    question: 'Why is SHA-256 hashing used?',
+    answer:
+      'SHA-256 creates a unique digital fingerprint of a file. Any modification to the document produces a different hash.',
+  },
+  {
+    id: 3,
+    question: 'Can a credential be verified without uploading the original file?',
+    answer:
+      'The transaction ID can confirm that a blockchain record exists, but file authenticity requires comparing the uploaded file hash with the registered hash.',
+  },
+  {
+    id: 4,
+    question: 'What blockchain is used for registration?',
+    answer:
+      'The system uses the Cardano blockchain test network to store credential verification metadata.',
+  },
+]
 
 const HowItWorks = () => {
   usePageTitle('How It Works')

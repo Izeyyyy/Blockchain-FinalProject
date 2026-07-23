@@ -1,48 +1,28 @@
-import { Stack, ToggleButton, ToggleButtonGroup } from '@mui/material'
-import { useState } from 'react'
+import { Stack } from '@mui/material'
 
 import PageIntro from '@/components/PageIntro'
 import VerifyOnlyPanel from '@/components/VerifyOnlyPanel'
 import { usePageTitle } from '@/hooks/usePageTitle'
-import { postVerifyCertificate, postVerifyDocument } from '@/services/api'
+import { verifyCredential } from '@/services/api'
 
 const Verify = () => {
-  usePageTitle('Verify Document/Certificate')
-  const [type, setType] = useState<'document' | 'certificate'>('document')
+  usePageTitle('Verify Academic Credential')
 
   return (
     <Stack spacing={4}>
       <PageIntro
-        eyebrow="Guest Verification"
-        title="Verify Document/Certificate"
-        description="Enter a Cardano Transaction Hash to verify an existing document or certificate."
+        eyebrow="Academic Integrity"
+        title="Verify Academic Credential"
+        description="Upload a credential and provide its Cardano Transaction ID to verify its authenticity."
       />
-      <ToggleButtonGroup
-        value={type}
-        exclusive
-        onChange={(_, newType) => {
-          if (newType) setType(newType)
-        }}
-        fullWidth
-      >
-        <ToggleButton value="document">Document</ToggleButton>
-        <ToggleButton value="certificate">Certificate</ToggleButton>
-      </ToggleButtonGroup>
-      {type === 'document' ? (
-        <VerifyOnlyPanel
-          title="Verify document by transaction hash"
-          description="Enter the Cardano Transaction Hash of a previously uploaded document and submit for verification."
-          verifyButtonLabel="Verify Document"
-          onVerify={(transactionHash) => postVerifyDocument({ fileName: '', fileType: 'Document', transactionHash })}
-        />
-      ) : (
-        <VerifyOnlyPanel
-          title="Verify certificate by transaction hash"
-          description="Enter the Cardano Transaction Hash of a previously uploaded certificate and submit for verification."
-          verifyButtonLabel="Verify Certificate"
-          onVerify={(transactionHash) => postVerifyCertificate({ fileName: '', fileType: 'Certificate', transactionHash })}
-        />
-      )}
+
+      <VerifyOnlyPanel
+        title="Verify Credential"
+        description="Upload a credential and provide its Cardano Transaction ID to verify its authenticity."
+        verifyButtonLabel="Verify Credential"
+        accept=".pdf,.png,.jpg,.jpeg"
+        onVerify={verifyCredential}
+      />
     </Stack>
   )
 }
