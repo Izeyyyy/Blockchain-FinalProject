@@ -3,27 +3,28 @@ import { alpha, createTheme } from '@mui/material/styles'
 export const enterpriseTheme = createTheme({
   palette: {
     primary: {
-      main: '#2563EB',
-      light: '#60A5FA',
-      dark: '#1D4ED8',
+      main: '#1A3F75',
+      light: '#446A9C',
+      dark: '#00002A',
+      contrastText: '#E8F0F7',
     },
     secondary: {
-      main: '#06B6D4',
-      light: '#67E8F9',
-      dark: '#0891B2',
+      main: '#6E8FB3',
+      light: '#AFC3D6',
+      dark: '#446A9C',
     },
     success: {
-      main: '#14B8A6',
+      main: '#3A6D7C',
     },
     background: {
-      default: '#F8FAFC',
-      paper: '#FFFFFF',
+      default: '#D6E2EC',
+      paper: '#E8F0F7',
     },
     text: {
-      primary: '#1E293B',
-      secondary: '#475569',
+      primary: '#00002A',
+      secondary: '#355279',
     },
-    divider: '#E2E8F0',
+    divider: '#9CB5CB',
   },
   shape: {
     borderRadius: 18,
@@ -91,7 +92,7 @@ export const enterpriseTheme = createTheme({
       styleOverrides: {
         body: {
           background:
-            'radial-gradient(circle at top left, rgba(6, 182, 212, 0.12), transparent 30%), radial-gradient(circle at top right, rgba(37, 99, 235, 0.10), transparent 24%), #F8FAFC',
+            'radial-gradient(circle at top left, rgba(68, 106, 156, 0.22), transparent 26%), radial-gradient(circle at top right, rgba(175, 195, 214, 0.22), transparent 24%), linear-gradient(180deg, #9FB8CF 0%, #D6E2EC 100%)',
         },
       },
     },
@@ -99,8 +100,8 @@ export const enterpriseTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 20,
-          border: '1px solid #E2E8F0',
-          boxShadow: '0px 20px 45px rgba(15, 23, 42, 0.06)',
+          border: '1px solid #9CB5CB',
+          boxShadow: '0px 20px 45px rgba(0, 0, 42, 0.08)',
           backgroundImage: 'none',
         },
       },
@@ -113,8 +114,16 @@ export const enterpriseTheme = createTheme({
           minHeight: 44,
         },
         containedPrimary: {
-          background: 'linear-gradient(135deg, #2563EB 0%, #06B6D4 100%)',
-          boxShadow: '0px 12px 28px rgba(37, 99, 235, 0.22)',
+          background: 'linear-gradient(135deg, #00002A 0%, #1A3F75 100%)',
+          boxShadow: '0px 12px 28px rgba(0, 0, 42, 0.24)',
+          color: '#E8F0F7',
+          '&:hover': {
+            background: 'linear-gradient(135deg, #00002A 0%, #244F8F 100%)',
+            color: '#F8FBFF',
+          },
+          '&.Mui-disabled': {
+            color: 'rgba(232, 240, 247, 0.78)',
+          },
         },
       },
     },
@@ -129,11 +138,13 @@ export const enterpriseTheme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: alpha('#FFFFFF', 0.8),
-          backdropFilter: 'blur(18px)',
-          color: '#1E293B',
-          boxShadow: '0px 8px 32px rgba(15, 23, 42, 0.06)',
-          borderBottom: '1px solid rgba(226, 232, 240, 0.8)',
+          backgroundColor: alpha('#E8F0F7', 0.18),
+          backdropFilter: 'blur(10px)',
+          color: '#00002A',
+          boxShadow: 'none',
+          borderBottom: '1px solid rgba(232, 240, 247, 0.12)',
+          borderRadius: 0,
+          backgroundImage: 'none',
         },
       },
     },

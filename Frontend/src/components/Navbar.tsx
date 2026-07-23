@@ -1,65 +1,61 @@
-import { Menu as MenuIcon, Search, Settings, Bell } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { Menu as MenuIcon } from 'lucide-react'
+import { useState } from 'react'
 import {
   AppBar,
-  Avatar,
   Box,
   Button,
   Drawer,
   IconButton,
-  Menu,
-  MenuItem,
   Stack,
   Toolbar,
   Typography,
 } from '@mui/material'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
 
-import { useAppContext } from '@/context/AppContext'
+import { navigationItems } from '@/data/mockData'
 import { iconMap } from '@/utils/iconMap'
 
 const Navbar = () => {
   const location = useLocation()
-  const { navigationItems, user, userMenuItems } = useAppContext()
+  const isDashboard = location.pathname === '/'
   const [drawerOpen, setDrawerOpen] = useState(false)
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const initials = useMemo(
-    () =>
-      user.name
-        .split(' ')
-        .slice(0, 2)
-        .map((part) => part[0])
-        .join(''),
-    [user.name],
-  )
 
   return (
-    <AppBar position="sticky" elevation={0}>
-      <Toolbar sx={{ minHeight: 82, gap: 2, px: { xs: 2, md: 4 } }}>
+    <AppBar
+      position={isDashboard ? 'absolute' : 'sticky'}
+      elevation={0}
+      sx={{
+        backgroundColor: isDashboard ? 'rgba(232,240,247,0.04)' : 'rgba(232,240,247,0.12)',
+        boxShadow: isDashboard ? 'none' : undefined,
+        borderBottom: isDashboard ? 'none' : '1px solid rgba(232,240,247,0.14)',
+        color: isDashboard ? 'primary.dark' : 'text.primary',
+        borderRadius: 0,
+        left: 0,
+        right: 0,
+        backdropFilter: 'blur(10px)',
+      }}
+    >
+      <Toolbar sx={{ minHeight: 82, gap: 2, px: { xs: 2, md: 5 }, width: '100%', maxWidth: 1280, mx: 'auto' }}>
         <Stack alignItems="center" direction="row" spacing={1.5} sx={{ flexGrow: 1 }}>
           <Box
             sx={{
-              width: 44,
-              height: 44,
-              borderRadius: 3,
-              display: 'grid',
-              placeItems: 'center',
-              background: 'linear-gradient(135deg, #2563EB 0%, #06B6D4 100%)',
-              color: '#FFFFFF',
-              boxShadow: '0px 14px 30px rgba(37, 99, 235, 0.22)',
+              fontSize: { xs: 20, md: 24 },
+              fontWeight: 900,
+              letterSpacing: 0.8,
+              color: isDashboard ? 'primary.dark' : 'primary.dark',
             }}
           >
-            {(() => {
-              const LogoIcon = iconMap.shield
-              return <LogoIcon size={20} />
-            })()}
+            ACIC
           </Box>
-          <Box>
-            <Typography fontWeight={800}>Document and Certificate Integrity Checker</Typography>
-            <Typography color="text.secondary" variant="body2">
-              Secure enterprise verification portal
-            </Typography>
-          </Box>
+          <Typography
+            sx={{
+              display: { xs: 'none', sm: 'block' },
+              fontWeight: 800,
+              color: isDashboard ? 'rgba(0, 0, 42, 0.9)' : 'text.primary',
+            }}
+          >
+            Academic Credential Integrity Checker
+          </Typography>
         </Stack>
 
         <Stack alignItems="center" direction="row" spacing={0.5} sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -71,8 +67,21 @@ const Navbar = () => {
               sx={{
                 px: 1.75,
                 py: 1,
-                color: location.pathname === item.path ? 'primary.main' : 'text.secondary',
-                backgroundColor: location.pathname === item.path ? 'rgba(37, 99, 235, 0.08)' : 'transparent',
+                color:
+                  location.pathname === item.path
+                    ? isDashboard
+                      ? 'primary.dark'
+                      : 'primary.main'
+                    : isDashboard
+                      ? 'rgba(0, 0, 42, 0.72)'
+                      : 'text.secondary',
+                backgroundColor:
+                  location.pathname === item.path
+                    ? isDashboard
+                      ? 'rgba(255, 255, 255, 0.34)'
+                      : 'rgba(68, 106, 156, 0.12)'
+                    : 'transparent',
+                borderRadius: 1.5,
               }}
             >
               {item.label}
@@ -81,19 +90,11 @@ const Navbar = () => {
         </Stack>
 
         <Stack alignItems="center" direction="row" spacing={0.5}>
-          <IconButton aria-label="Global search">
-            <Search size={18} />
-          </IconButton>
-          <IconButton aria-label="Notifications">
-            <Bell size={18} />
-          </IconButton>
-          <IconButton aria-label="Settings" component={RouterLink} to="/settings">
-            <Settings size={18} />
-          </IconButton>
-          <IconButton aria-label="Account menu" onClick={(event) => setAnchorEl(event.currentTarget)}>
-            <Avatar sx={{ width: 36, height: 36, bgcolor: 'primary.main' }}>{initials}</Avatar>
-          </IconButton>
-          <IconButton aria-label="Open navigation" onClick={() => setDrawerOpen(true)} sx={{ display: { md: 'none' } }}>
+          <IconButton
+            aria-label="Open navigation"
+            onClick={() => setDrawerOpen(true)}
+            sx={{ display: { xs: 'inline-flex', md: 'none' }, color: isDashboard ? 'primary.dark' : 'primary.dark' }}
+          >
             <MenuIcon size={20} />
           </IconButton>
         </Stack>
@@ -124,19 +125,6 @@ const Navbar = () => {
           </Stack>
         </Box>
       </Drawer>
-
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
-        {userMenuItems.map((item) => (
-          <MenuItem
-            key={item.path}
-            component={RouterLink}
-            to={item.path}
-            onClick={() => setAnchorEl(null)}
-          >
-            {item.label}
-          </MenuItem>
-        ))}
-      </Menu>
     </AppBar>
   )
 }

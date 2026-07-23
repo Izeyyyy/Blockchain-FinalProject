@@ -1,12 +1,6 @@
 import axios from 'axios'
 
-import {
-  analyticsResponse,
-  certificates,
-  dashboardResponse,
-  documents,
-  verificationHistory,
-} from '@/data/mockData'
+import { verificationRecords } from '@/data/mockData'
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080',
@@ -28,38 +22,28 @@ const resolveData = async (request, fallbackData) => {
   return response.data
 }
 
-export const getDashboard = () =>
-  resolveData(() => apiClient.get('/api/dashboard'), dashboardResponse)
-
-export const getDocuments = () =>
-  resolveData(() => apiClient.get('/api/documents'), documents)
-
-export const getCertificates = () =>
-  resolveData(() => apiClient.get('/api/certificates'), certificates)
-
 export const getVerifications = () =>
-  resolveData(() => apiClient.get('/api/verifications'), verificationHistory)
+  resolveData(() => apiClient.get('/api/verifications'), verificationRecords)
 
-export const getAnalytics = () =>
-  resolveData(() => apiClient.get('/api/analytics'), analyticsResponse)
-
-export const postVerify = async (payload) =>
+export const postVerifyDocument = async (payload) =>
   resolveData(
-    () => apiClient.post('/api/verify', payload),
+    () => apiClient.post('/api/verify-document', payload),
     {
       success: true,
-      message: 'Mock verification response ready for API integration.',
-      submittedPayload: payload,
+      message: 'Mock document verification completed.',
+      referenceId: `DOC-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`,
+      status: 'Verified',
     },
   )
 
-export const postUpload = async (payload) =>
+export const postVerifyCertificate = async (payload) =>
   resolveData(
-    () => apiClient.post('/api/upload', payload),
+    () => apiClient.post('/api/verify-certificate', payload),
     {
       success: true,
-      message: 'Mock upload response ready for API integration.',
-      submittedPayload: payload,
+      message: 'Mock certificate verification completed.',
+      referenceId: `CERT-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`,
+      status: 'Verified',
     },
   )
 
