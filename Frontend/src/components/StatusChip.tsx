@@ -5,10 +5,11 @@ type StatusChipProps = {
 }
 
 const colorMap = {
+  'Pending Registration': { backgroundColor: '#FEF3C7', color: '#92400E' },
+  Registered: { backgroundColor: '#DBEAFE', color: '#1E40AF' },
   Verified: { backgroundColor: '#DCFCE7', color: '#166534' },
-  Pending: { backgroundColor: '#FEF3C7', color: '#92400E' },
-  Rejected: { backgroundColor: '#FEE2E2', color: '#B91C1C' },
-  Expired: { backgroundColor: '#E2E8F0', color: '#334155' },
+  Tampered: { backgroundColor: '#FEE2E2', color: '#B91C1C' },
+  'Not Found': { backgroundColor: '#E2E8F0', color: '#334155' },
 }
 
 const StatusChip = ({ status }: StatusChipProps) => (
@@ -16,7 +17,7 @@ const StatusChip = ({ status }: StatusChipProps) => (
     label={status}
     size="small"
     sx={{
-      ...(colorMap[status as keyof typeof colorMap] ?? colorMap.Pending),
+      ...(colorMap[status as keyof typeof colorMap] ?? colorMap['Pending Registration']),
       fontWeight: 800,
     }}
   />

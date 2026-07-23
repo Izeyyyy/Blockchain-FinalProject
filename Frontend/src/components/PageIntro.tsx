@@ -12,7 +12,7 @@ const PageIntro = ({ eyebrow, title, description, chips = [] }: PageIntroProps) 
     sx={{
       px: { xs: 2.5, md: 4 },
       py: { xs: 3, md: 4 },
-      borderRadius: 5,
+      borderRadius: 0,
       border: '1px solid',
       borderColor: 'divider',
       background:
