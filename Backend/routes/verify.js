@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const crypto = require('crypto');
 const axios = require('axios');
-const { findByFileHash, logVerifyResult } = require('../localIndex');
+const { findByFileHash } = require('../localIndex');
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -40,9 +40,6 @@ router.post('/', upload.single('file'), async (req, res) => {
     }
 
     const verified = storedHash === recomputedHash;
-
-    // Log this result so the admin dashboard's stats stay accurate
-    logVerifyResult(txHash, verified);
 
     res.json({
       verified,
