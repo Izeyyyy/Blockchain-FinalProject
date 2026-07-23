@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "fileName": "test.txt",
+    "fileHash": "83790c2d3a93a949991ca05acf3592325ae0d1b28837f104100f8e61e2564ba3",
+    "txHash": "dff7da63d56e34b658e1c48273c5850f5a84abefb63f8a2860787dc052fad976",
+    "previousTxHash": "genesis",
+    "timestamp": 1784789411199
+  }
+]
