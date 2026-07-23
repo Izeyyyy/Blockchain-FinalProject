@@ -2,12 +2,11 @@ const express = require('express');
 const { supabase } = require('../supabaseClient');
 const { readIndex } = require('../localIndex');
 const { requireAuth } = require('../middleware/requireAuth');
-const { requireAdmin } = require('../middleware/requireAdmin');
 
 const router = express.Router();
 
-// All routes below require a logged-in admin
-router.use(requireAuth, requireAdmin);
+// All routes below require a logged-in admin account
+router.use(requireAuth);
 
 // GET /admin/dashboard — records + basic stats
 router.get('/dashboard', (req, res) => {
@@ -24,11 +23,11 @@ router.get('/dashboard', (req, res) => {
   });
 });
 
-// GET /admin/users — list all registered users and their roles
+// GET /admin/users — list all admin accounts
 router.get('/users', async (req, res) => {
   const { data, error } = await supabase
     .from('profiles')
-    .select('id, email, role, is_active, created_at')
+    .select('id, email, is_active, created_at')
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -38,33 +37,7 @@ router.get('/users', async (req, res) => {
   res.json({ count: data.length, users: data });
 });
 
-// PATCH /admin/users/:id/role — promote/demote a user
-router.patch('/users/:id/role', async (req, res) => {
-  const { role } = req.body;
-  if (!['user', 'admin'].includes(role)) {
-    return res.status(400).json({ error: "Role must be 'user' or 'admin'." });
-  }
-
-  // Prevent an admin from accidentally demoting themselves and locking everyone out
-  if (req.params.id === req.user.id && role !== 'admin') {
-    return res.status(400).json({ error: 'You cannot remove your own admin role.' });
-  }
-
-  const { data, error } = await supabase
-    .from('profiles')
-    .update({ role })
-    .eq('id', req.params.id)
-    .select()
-    .single();
-
-  if (error) {
-    return res.status(500).json({ error: 'Failed to update role.', details: error.message });
-  }
-
-  res.json({ message: 'Role updated.', user: data });
-});
-
-// PATCH /admin/users/:id/status — activate/deactivate an account
+// PATCH /admin/users/:id/status — activate/deactivate an admin account
 router.patch('/users/:id/status', async (req, res) => {
   const { is_active } = req.body;
   if (typeof is_active !== 'boolean') {

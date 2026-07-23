@@ -1,6 +1,7 @@
 // Verifies the Supabase access token sent from the frontend
 // (as: Authorization: Bearer <access_token>)
-// and attaches the logged-in user + their profile (role) to req.user
+// Since only admin accounts exist in this app, being logged in
+// IS being an admin — there's no separate role to check.
 
 const { supabase } = require('../supabaseClient');
 
@@ -13,16 +14,14 @@ async function requireAuth(req, res, next) {
       return res.status(401).json({ error: 'Missing or invalid Authorization header.' });
     }
 
-    // Verify the token with Supabase and get the user it belongs to
     const { data: userData, error: userError } = await supabase.auth.getUser(token);
     if (userError || !userData?.user) {
       return res.status(401).json({ error: 'Invalid or expired session.' });
     }
 
-    // Look up their role/status from the profiles table
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
-      .select('role, is_active, email')
+      .select('is_active, email')
       .eq('id', userData.user.id)
       .single();
 
@@ -34,12 +33,7 @@ async function requireAuth(req, res, next) {
       return res.status(403).json({ error: 'This account has been deactivated.' });
     }
 
-    req.user = {
-      id: userData.user.id,
-      email: profile.email,
-      role: profile.role,
-    };
-
+    req.user = { id: userData.user.id, email: profile.email };
     next();
   } catch (err) {
     console.error('Auth middleware error:', err);

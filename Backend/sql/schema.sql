@@ -28,7 +28,48 @@ create trigger on_auth_user_created
 alter table profiles enable row level security;
 
 create policy "Users can view their own profile"
+  on profiles for sele-- Run this in your Supabase project's SQL Editor (Database > SQL Editor > New query)
+
+-- Profiles table: extends Supabase's built-in auth.users.
+-- Every account created here is an admin account — there is no
+-- separate "regular user" role, since only admins log in to this app.
+create table if not exists profiles (
+  id uuid references auth.users(id) on delete cascade primary key,
+  email text,
+  is_active boolean not null default true,
+  created_at timestamp with time zone default now()
+);
+
+-- Automatically create a profile row whenever an admin account signs up
+create or replace function handle_new_user()
+returns trigger as $$
+begin
+  insert into public.profiles (id, email)
+  values (new.id, new.email);
+  return new;
+end;
+$$ language plpgsql security definer;
+
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute procedure handle_new_user();
+
+alter table profiles enable row level security;
+
+create policy "Users can view their own profile"
   on profiles for select
+  using (auth.uid() = id);
+
+-- Records of uploaded/verified documents (not tied to a specific user,
+-- since regular users never log in — this is just the chain data)
+create table if not exists document_records (
+  id uuid primary key default gen_random_uuid(),
+  file_name text not null,
+  file_hash text not null,
+  tx_hash text not null,
+  previous_tx_hash text,
+  created_at timestamp with time zone default now()
+);  
   using (auth.uid() = id);
 
 -- Note: admin actions (listing all users, changing roles) go through
