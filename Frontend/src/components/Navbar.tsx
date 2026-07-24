@@ -37,7 +37,7 @@ const Navbar = () => {
     >
       <Toolbar sx={{ minHeight: 82, gap: 2, px: { xs: 2, md: 5 }, width: '100%', maxWidth: 1280, mx: 'auto' }}>
         <Stack alignItems="center" direction="row" spacing={1.5} sx={{ flexGrow: 1 }}>
-          <Box
+          <Typography
             sx={{
               fontSize: { xs: 20, md: 24 },
               fontWeight: 900,
@@ -45,16 +45,7 @@ const Navbar = () => {
               color: isDashboard ? 'primary.dark' : 'primary.dark',
             }}
           >
-            ACIC
-          </Box>
-          <Typography
-            sx={{
-              display: { xs: 'none', sm: 'block' },
-              fontWeight: 800,
-              color: isDashboard ? 'rgba(0, 0, 42, 0.9)' : 'text.primary',
-            }}
-          >
-            Academic Credential Integrity Checker
+            Document &amp; Certificate Integrity Checker
           </Typography>
         </Stack>
 

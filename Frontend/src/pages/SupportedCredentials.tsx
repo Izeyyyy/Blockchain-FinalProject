@@ -79,8 +79,8 @@ const SupportedCredentials = () => {
     <Stack spacing={6}>
       <PageIntro
         eyebrow="Information"
-        title="Supported Academic Credentials"
-        description="Learn about the academic documents and certificates that can be verified through the Academic Credential Verification Portal."
+        title="Supported Documents &amp; Certificates"
+        description="Learn about the documents and certificates that can be verified through the Document &amp; Certificate Integrity Checker."
       />
       <Stack spacing={4}>
         <Box>

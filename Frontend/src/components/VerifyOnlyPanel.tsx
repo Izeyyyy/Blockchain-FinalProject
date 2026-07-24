@@ -81,7 +81,7 @@ const VerifyOnlyPanel = ({
           >
             {selectedFile
               ? selectedFile.name
-              : 'Choose Academic Credential'}
+              : 'Choose Document/Certificate'}
 
             <input
               hidden
@@ -135,7 +135,7 @@ const VerifyOnlyPanel = ({
             </Alert>
           ) : (
             <Alert severity="info" sx={{ borderRadius: 4 }}>
-              Verification results will appear after you upload an academic credential and enter its transaction hash.
+              Verification results will appear after you upload a document/certificate and enter its transaction hash.
             </Alert>
           )}
         </Stack>

@@ -19,16 +19,16 @@ const Upload = () => {
     <Stack spacing={4}>
       <PageIntro
         eyebrow="Guest Upload"
-        title="Upload Academic Credential"
-        description="Upload an academic document or certificate for later verification."
+        title="Upload Document/Certificate"
+        description="Upload a document or certificate for later verification."
       />
       
       <UploadVerifyPanel
-        title="Upload Academic Credential"
-        description="Select an academic credential (PDF or image) to register it on the Cardano blockchain."
+        title="Upload Document/Certificate"
+        description="Select a document or certificate (PDF or image) to register it on the Cardano blockchain."
         supportedFileTypes={supportedCredentialFileTypes}
         accept=".pdf,.png,.jpg,.jpeg"
-        verifyButtonLabel="Register Credential"
+        verifyButtonLabel="Register Document/Certificate"
         onVerify={(file) => uploadCredential(file)}
       />
     </Stack>

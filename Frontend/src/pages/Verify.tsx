@@ -6,20 +6,20 @@ import { usePageTitle } from '@/hooks/usePageTitle'
 import { verifyCredential } from '@/services/api'
 
 const Verify = () => {
-  usePageTitle('Verify Academic Credential')
+  usePageTitle('Verify Document/Certificate')
 
   return (
     <Stack spacing={4}>
       <PageIntro
-        eyebrow="Academic Integrity"
-        title="Verify Academic Credential"
-        description="Upload a credential and provide its Cardano Transaction ID to verify its authenticity."
+        eyebrow="Integrity Check"
+        title="Verify Document/Certificate"
+        description="Upload a document/certificate and provide its Cardano Transaction ID to verify its authenticity."
       />
 
       <VerifyOnlyPanel
-        title="Verify Credential"
-        description="Upload a credential and provide its Cardano Transaction ID to verify its authenticity."
-        verifyButtonLabel="Verify Credential"
+        title="Verify Document/Certificate"
+        description="Upload a document/certificate and provide its Cardano Transaction ID to verify its authenticity."
+        verifyButtonLabel="Verify Document/Certificate"
         accept=".pdf,.png,.jpg,.jpeg"
         onVerify={verifyCredential}
       />

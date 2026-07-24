@@ -11,7 +11,7 @@ const featureCards = [
     id: 1,
     title: 'Register Credential',
     description:
-      'Upload an academic document and register its SHA-256 fingerprint on the Cardano blockchain.',
+      'Upload a document or certificate, and register its SHA-256 fingerprint on the Cardano blockchain.',
     route: '/upload',
     iconKey: 'upload',
     accent: '#2563EB',
@@ -20,7 +20,7 @@ const featureCards = [
     id: 2,
     title: 'Verify Credential',
     description:
-      'Verify the authenticity of an academic credential using its file and blockchain transaction ID.',
+      'Verify the authenticity of a document or certificate using its file and blockchain transaction ID.',
     route: '/verify',
     iconKey: 'verify',
     accent: '#14B8A6',
@@ -29,7 +29,7 @@ const featureCards = [
     id: 3,
     title: 'Credential Registry',
     description:
-      'Browse registered academic credentials and view their blockchain transaction records.',
+      'Browse registered documents and certificates and view their blockchain transaction records.',
     route: '/credential-history',
     iconKey: 'history',
     accent: '#446A9C',
@@ -67,10 +67,10 @@ const Dashboard = () => {
           <motion.div variants={fadeInUp}>
             <Stack spacing={1}>
               <Typography sx={{ fontSize: { xs: 34, md: 48 }, fontWeight: 800, lineHeight: 1.1 }}>
-                Welcome to the Academic Credential Verification Portal
+                Welcome to the Document &amp; Certificate Integrity Checker
               </Typography>
               <Typography sx={{ fontSize: { xs: 12, md: 20 }, fontWeight: 300, color: 'rgba(232,240,247,0.88)' }}>
-                Securely verify academic documents and certificates using blockchain-powered integrity verification.
+                Securely verify documents and certificates using blockchain-powered integrity verification.
               </Typography>
             </Stack>
           </motion.div>
