@@ -75,7 +75,7 @@ const CredentialRegistry = () => {
       <PageIntro
         eyebrow="Guest Portal"
         title="Credential Registry"
-        description="Browse all academic credentials registered on the Cardano blockchain."
+        description="Browse all documents and certificates registered on the Cardano blockchain."
       />
 
       <Paper sx={{ p: 3 }}>

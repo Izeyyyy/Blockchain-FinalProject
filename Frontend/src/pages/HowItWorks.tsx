@@ -15,9 +15,9 @@ import { usePageTitle } from '@/hooks/usePageTitle'
 const howItWorksSteps = [
   {
     id: 1,
-    title: '1. Upload Academic Credential',
+    title: '1. Upload Document/Certificate',
     description:
-      'The user uploads an academic document or certificate through the portal. The system processes the file and prepares it for blockchain registration.',
+      'The user uploads a document or certificate through the portal. The system processes the file and prepares it for blockchain registration.',
   },
   {
     id: 2,
@@ -74,7 +74,7 @@ const HowItWorks = () => {
       <PageIntro
         eyebrow="Guide"
         title="How It Works"
-        description="Learn how the Academic Credential Verification Portal verifies the authenticity and integrity of academic credentials."
+        description="Learn how the Document &amp; Certificate Integrity Checker verifies the authenticity and integrity of documents and certificates."
       />
       <Stack spacing={4}>
         <Stack spacing={3}>

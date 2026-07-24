@@ -18,7 +18,7 @@ const Footer = () => (
         spacing={1}
       >
         <Typography color="text.secondary" variant="body2">
-          © 2026 Academic Credential Verification Portal. All Rights Reserved.
+          © 2026 Document &amp; Certificate Integrity Checker. All Rights Reserved.
         </Typography>
         <Typography color="text.secondary" variant="body2">
           Belia | Gaane | Vestil
